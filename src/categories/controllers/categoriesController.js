@@ -69,7 +69,7 @@ class CategoriesController {
 					message: 'Categoria não encontrada'
 				});
 			}
-			res.status(204).send();
+			res.redirect('/categories/table');
 		} catch (error) {
 			console.error('Erro ao deletar categoria:', error);
 		}
