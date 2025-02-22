@@ -1,11 +1,13 @@
-import CategoryModel from '../models/categoriesModel.js';
 import slugify from 'slugify';
+import CategoryModel from '../models/categoriesModel.js';
 
 class CategoriesController {
+	// Método para resnderizar o formulario de criação de categorias
 	async showFormCategories(_req, res) {
 		res.render('categories/FormNewCategory');
 	}
 
+	// Método para criar uma nova categoria
 	async createCategory(req, res) {
 		try {
 			const { title } = req.body;
@@ -38,6 +40,7 @@ class CategoriesController {
 		}
 	}
 
+	// Método para resnderizar a tabela com as categorias
 	async showTableCategories(_req, res) {
 		try {
 			const categories = await CategoryModel.getAllCategories();
@@ -51,6 +54,7 @@ class CategoriesController {
 		}
 	}
 
+	// Método para excluir categoria
 	async deleteCategory(req, res) {
 		try {
 			const id = parseInt(req.params.id, 10);
@@ -72,6 +76,39 @@ class CategoriesController {
 			res.redirect('/categories/table');
 		} catch (error) {
 			console.error('Erro ao deletar categoria:', error);
+		}
+	}
+
+	// Método para resnderizar o formulário de edição de categoria
+	async showFormEdit(req, res) {
+		try {
+			const id = parseInt(req.params.id, 10);
+			console.log('ID recebido:', id); // Adicione este log
+
+			// Validação do ID
+			if (!Number.isInteger(id) || id <= 0) {
+				return res.status(400).render('error', {
+					message: 'ID de categoria inválido'
+				});
+			}
+
+			// Busca a categoria
+			const editCategory = await CategoryModel.findByPk(id);
+			console.log('Categoria encontrada:', editCategory); // Adicione este log
+
+			// Verifica se a categoria existe
+			if (!editCategory) {
+				return res.status(404).render('error', {
+					message: 'Categoria não encontrada'
+				});
+			}
+
+			res.render('categories/formEditCategory', { category: editCategory });
+		} catch (error) {
+			console.error('Erro ao carregar formulário de edição:', error);
+			res.status(500).render('500', {
+				message: 'Erro interno ao carregar a página de edição'
+			});
 		}
 	}
 }

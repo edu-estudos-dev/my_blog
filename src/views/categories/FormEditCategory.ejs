@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<%- include('../partials/head', { title: 'Formulario de atualização de categoria' }) %>
+<%- include('../partials/nav-bar') %>
+
+    <div class="container mt-5 w-50">
+        <br>
+        <form action="/categories/save" method="post">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Edição de categoria</h2>
+                </div>
+                <div class="card-body">
+                    <input class="form-control" placeholder="Digite aqui a atualização da categoria." type="text" name="title" required value="<%= category.title %>"> <!-- Corrigi a variável aqui -->
+                </div>
+            </div>
+            <button type="submit" class="btn btn-success mt-3">Atualizar Categoria</button>
+        </form>
+    </div>
+
+<%- include('../partials/footer') %>
+</html>
