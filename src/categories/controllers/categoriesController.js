@@ -111,6 +111,30 @@ class CategoriesController {
 			});
 		}
 	}
+
+	// Método para atualizar uma categoria
+	async updateCategory(req, res) {
+		try {
+			const { title } = req.body;
+			const id = req.params.id;
+			console.log('Dados recebidos para atualização:', { id, title });
+
+			const upperCaseTitle = title.toUpperCase();
+			const slug = slugify(title).toLowerCase();
+
+			await CategoryModel.update(
+				{ title: upperCaseTitle, slug },
+				{ where: { id } }
+			);
+			console.log('Categoria atualizada:', title);
+			res.redirect('/categories/table');
+		} catch (error) {
+			console.error('Erro ao atualizar categoria:', error);
+			res.status(500).render('500', {
+				message: 'Erro ao atualizar categoria'
+			});
+		}
+	}
 }
 
 export default new CategoriesController();

@@ -8,6 +8,9 @@ categoriesRouter.get('/categories/table', CategoriesController.showTableCategori
 categoriesRouter.post('/categories/save', CategoriesController.createCategory);
 categoriesRouter.delete('/categories/:id', CategoriesController.deleteCategory);
 categoriesRouter.get('/categories/formEditCategory/:id', CategoriesController.showFormEdit);
+categoriesRouter.put('/categories/update/:id', CategoriesController.updateCategory);
+
+
 
 
 

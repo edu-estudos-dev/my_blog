@@ -4,9 +4,7 @@
     <%- include('../partials/nav-bar') %>
 
         <div class="container mt-5">
-
             <h3 class="text-center bg-dark text-white py-2">Categorias</h3>
-
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -29,9 +27,10 @@
                                 <%= category.slug %>
                             </td>
                             <td class="py-1">
-                                <button class="btn btn-warning py-0 ms-2">Editar</button>
+                                <a href="/categories/formEditCategory/<%= category.id %>"
+                                    class="btn btn-warning py-0 ms-2">Editar</a>
                                 <form action="/categories/<%= category.id %>?_method=DELETE" method="POST"
-                                    style="display: inline;" onsubmit=" return confirmDelete(event , this)">
+                                    style="display: inline;" onsubmit="return confirmDelete(event, this)">
                                     <button type="submit" class="btn btn-danger py-0 ms-2">Excluir</button>
                                 </form>
                             </td>
@@ -39,18 +38,17 @@
                         <% }) %>
                 </tbody>
             </table>
-
         </div>
 
         <%- include('../partials/footer') %>
 
             <script>
                 function confirmDelete(event, form) {
-                    event.preventDefault()
-                    const isConfirmed = confirm("Tem certeza que deseja deletar essacategoria?")
+                    event.preventDefault();
+                    const isConfirmed = confirm("Tem certeza que deseja deletar essa categoria?");
                     if (isConfirmed) {
-                        form.submit()
-                        alert("Categoria excluída com Sucesso.")
+                        form.submit();
+                        alert("Categoria excluída com Sucesso.");
                     }
                 }
             </script>
