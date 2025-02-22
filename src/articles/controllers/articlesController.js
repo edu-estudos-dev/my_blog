@@ -1,22 +1,11 @@
-// import ArticlesModel from '../models/articlesModel.js';
+import CategoryModel from '../../categories/models/categoriesModel.js';
 
-// // Controlador para listar todos os artigos
-// export const getAllArticles = async (req, res) => {
-//     try {
-//         const articles = await ArticlesModel.findAll();
-//         res.render('articles/index', { articles });
-//     } catch (error) {
-//         res.status(500).send('Erro ao buscar artigos');
-//     }
-// };
+class ArticlesController {
+	// Método para resnderizar o formulario de criação de Artigos
+	async showFormArticle(_req, res) {
+		const categories = await CategoryModel.findAll();
+		res.render('articles/FormNewArticle', { categories });
+	}
+}
 
-// // Controlador para criar um novo artigo
-// export const createArticle = async (req, res) => {
-//     try {
-//         const { title, slug, body, categoryId } = req.body;
-//         const article = await ArticlesModel.create({ title, slug, body, categoryId });
-//         res.redirect('/articles');
-//     } catch (error) {
-//         res.status(500).send('Erro ao criar artigo');
-//     }
-// };
+export default new ArticlesController();

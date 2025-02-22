@@ -1,12 +1,11 @@
-// import express from 'express';
-// import { getAllArticles, createArticle } from '../controllers/articlesController.js';
+import express from 'express';
+import ArticlesController from '../controllers/articlesController.js';
 
-// const router = express.Router();
+const articlesRouter = express.Router();
 
-// // Rota para listar todos os artigos
-// router.get('/', getAllArticles);
+// rota para renderizar o formulário para criação de artigos
+articlesRouter.get('/articles/new', ArticlesController.showFormArticle);
 
-// // Rota para criar um novo artigo
-// router.post('/', createArticle);
 
-// export default router;
+
+export default articlesRouter;

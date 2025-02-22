@@ -4,7 +4,7 @@ import CategoryModel from '../models/categoriesModel.js';
 class CategoriesController {
 	// Método para resnderizar o formulario de criação de categorias
 	async showFormCategories(_req, res) {
-		res.render('categories/FormNewCategory');
+		res.render('categories/formNewCategory');
 	}
 
 	// Método para criar uma nova categoria

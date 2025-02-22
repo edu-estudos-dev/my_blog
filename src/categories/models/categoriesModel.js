@@ -15,7 +15,7 @@ class CategoryModel extends Model {
 				modelName: 'Category'
 			}
 		);
-		return CategoryModel; // Adicione esta linha
+		return CategoryModel;
 	}
 
 	static async getAllCategories() {
@@ -37,13 +37,12 @@ class CategoryModel extends Model {
 	}
 
 	// src/categories/models/categoriesModel.js
-	static associate(models) {
-		this.hasMany(models.ArticlesModel, {
-			// Use ArticlesModel diretamente
-			foreignKey: 'categoryId',
-			as: 'articles'
-		});
-	}
+   static associate(models) {
+      this.hasMany(models.Article, {
+          foreignKey: 'categoryId',
+          as: 'articles'
+      });
+  }
 }
 
 export default CategoryModel;
