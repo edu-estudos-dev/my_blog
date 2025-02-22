@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<%- include('../partials/head', { title: 'Tabela de categorias' }) %>
+    <%- include('../partials/nav-bar') %>
+
+        <div class="container mt-5">
+
+            <h3 class="text-center bg-dark text-white py-2">Categorias</h3>
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Título</th>
+                        <th scope="col">Slug</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% categories.forEach(category=> { %>
+                        <tr>
+                            <td class="py-1">
+                                <%= category.id %>
+                            </td>
+                            <td class="py-1">
+                                <%= category.title %>
+                            </td>
+                            <td class="py-1">
+                                <%= category.slug %>
+                            </td>
+                            <td class="py-1">
+                                <button class="btn btn-warning py-0 ms-2">Editar</button>
+                                <form action="/categories/<%= category.id %>?_method=DELETE" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger py-0 ms-2">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+
+        </div>
+
+        <%- include('../partials/footer') %>
+
+</html>

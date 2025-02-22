@@ -1,30 +1,49 @@
-import { DataTypes, Model } from 'sequelize';
+import { DataTypes, Model } from 'sequelize'; // Importe Model do sequelize
 
 class CategoryModel extends Model {
-    static initModel(connection) {
-        CategoryModel.init(
-            {
-                title: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                slug: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                }
-            },
-            {
-                sequelize: connection,
-                modelName: 'Category',
-                tableName: 'categories'
-            }
-        );
-    }
+	static initModel(connection) {
+		CategoryModel.init(
+			{
+				title: DataTypes.STRING,
+				slug: {
+					type: DataTypes.STRING,
+					unique: true
+				}
+			},
+			{
+				sequelize: connection,
+				modelName: 'Category'
+			}
+		);
+		return CategoryModel; // Adicione esta linha
+	}
 
-    static associate(models) {
-        this.hasMany(models.ArticlesModel, { foreignKey: 'categoryId', as: 'articles' });
-    }
+	static async getAllCategories() {
+		try {
+			return await CategoryModel.findAll();
+		} catch (error) {
+			console.error('Erro ao obter categorias:', error);
+			throw error;
+		}
+	}
+
+	static async deleteCategory(id) {
+		try {
+			return await CategoryModel.destroy({ where: { id } });
+		} catch (error) {
+			console.error('Erro ao deletar categoria:', error);
+			throw error;
+		}
+	}
+
+	// src/categories/models/categoriesModel.js
+	static associate(models) {
+		this.hasMany(models.ArticlesModel, {
+			// Use ArticlesModel diretamente
+			foreignKey: 'categoryId',
+			as: 'articles'
+		});
+	}
 }
 
-// Exporta o modelo sem inicializar
 export default CategoryModel;

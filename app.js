@@ -1,28 +1,36 @@
-import express, { urlencoded } from 'express';
+import express from 'express';
+import methodOverride from 'method-override';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import articlesRoutes from './src/articles/routes/articlesRoutes.js';
-import categoriesRoutes from './src/categories/routes/categoriesRoutes.js';
-import connection from './src/database/connection.js';
+import categoriesRouter from './src/categories/routes/categoriesRoutes.js';
 
 const app = express();
-
-// Definir o caminho do diretório atual
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Configurando o View engine
-app.set('view engine', 'ejs');
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', path.join(__dirname, 'src', 'views'));
 
-// Configurando arquivos estáticos
-app.use(express.static('public'));
+app.set('view engine', 'ejs');
 
-// Configuração para ler dados JSON
 app.use(express.json());
-app.use(urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
-app.use('/articles', articlesRoutes);
-app.use('/categories', categoriesRoutes);
+app.use(methodOverride('_method'));
+
+app.use(categoriesRouter);
+
+app.get('/', (_req, res) => {
+	res.render('home');
+});
+
+app.use((_req, res) => {
+	res.status(404).render('404');
+});
+
+app.use((err, _req, res, _next) => {
+	console.error('Erro interno:', err);
+	res.status(500).render('500');
+});
 
 export default app;

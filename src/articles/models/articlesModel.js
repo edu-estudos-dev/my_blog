@@ -1,34 +1,27 @@
-import { DataTypes, Model } from 'sequelize';
+// src/articles/models/articlesModel.js
+import { Model, DataTypes } from 'sequelize';
 
 class ArticlesModel extends Model {
-    static initModel(sequelize) {
+    static initModel(connection) {
         ArticlesModel.init(
             {
-                title: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                slug: {
-                    type: DataTypes.STRING,
-                    allowNull: false
-                },
-                body: {
-                    type: DataTypes.TEXT,
-                    allowNull: false
-                }
+                title: DataTypes.STRING,
+                body: DataTypes.TEXT
             },
             {
-                sequelize,
-                modelName: 'Articles',
-                tableName: 'articles'
+                sequelize: connection,
+                modelName: 'Article'
             }
         );
+        return ArticlesModel; // Retorne a classe
     }
 
     static associate(models) {
-        this.belongsTo(models.CategoryModel, { foreignKey: 'categoryId', as: 'category' });
+        this.belongsTo(models.CategoryModel, {
+            foreignKey: 'categoryId',
+            as: 'category'
+        });
     }
 }
 
-// Exporta o modelo sem inicializar
 export default ArticlesModel;

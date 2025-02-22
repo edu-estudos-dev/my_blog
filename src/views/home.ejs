@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<%- include('partials/head', { title: 'Página Inicial' }) %>
+<%- include('partials/nav-bar') %>
+
+<div class="container mt-5">
+    <div class="jumbotron">
+        <h1 class="display-4">Bem-vindo ao My Blog!</h1>
+        <p class="lead">Um sistema simples para gerenciamento de categorias e artigos.</p>
+        <hr class="my-4">
+        <p>Comece criando uma nova categoria ou visualizando as existentes.</p>
+        <a class="btn btn-primary btn-lg" href="/categories/new" role="button">Criar Categoria</a>
+        <a class="btn btn-success btn-lg" href="/categories/table" role="button">Ver Categorias</a>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
+</html>

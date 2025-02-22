@@ -1,12 +1,12 @@
 import express from 'express';
 import CategoriesController from '../controllers/categoriesController.js';
 
-const router = express.Router();
+const categoriesRouter = express.Router();
 
-// // Rota para listar todas as categorias
-// router.get('/', CategoriesController.getAllCategories);
+categoriesRouter.get('/categories/new', CategoriesController.showFormCategories);
+categoriesRouter.get('/categories/table', CategoriesController.showTableCategories);
+categoriesRouter.post('/categories/save', CategoriesController.createCategory);
+categoriesRouter.delete('/categories/:id', CategoriesController.deleteCategory);
 
-// // Rota para criar uma nova categoria
-// router.post('/', CategoriesController.createCategory);
 
-export default router;
+export default categoriesRouter;
