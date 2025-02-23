@@ -1,7 +1,8 @@
-import { DataTypes, Model } from 'sequelize'; // Importe Model do sequelize
+import { DataTypes, Model } from 'sequelize';
 
 class CategoryModel extends Model {
 	static initModel(connection) {
+		// Método de inicialização do model
 		CategoryModel.init(
 			{
 				title: DataTypes.STRING,
@@ -18,31 +19,13 @@ class CategoryModel extends Model {
 		return CategoryModel;
 	}
 
-	static async getAllCategories() {
-		try {
-			return await CategoryModel.findAll();
-		} catch (error) {
-			console.error('Erro ao obter categorias:', error);
-			throw error;
-		}
+	// Relacionamento entre as tabelas
+	static associate(models) {
+		this.hasMany(models.Article, {
+			foreignKey: 'categoryId',
+			as: 'articles'
+		});
 	}
-
-	static async deleteCategory(id) {
-		try {
-			return await CategoryModel.destroy({ where: { id } });
-		} catch (error) {
-			console.error('Erro ao deletar categoria:', error);
-			throw error;
-		}
-	}
-
-	// src/categories/models/categoriesModel.js
-   static associate(models) {
-      this.hasMany(models.Article, {
-          foreignKey: 'categoryId',
-          as: 'articles'
-      });
-  }
 }
 
 export default CategoryModel;

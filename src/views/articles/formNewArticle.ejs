@@ -13,8 +13,8 @@
                     <div class="card-body">
                         <input class="form-control" placeholder="Crie aqui uma nova categoria." type="text" name="title"
                             required> <br>
-                        <textarea placeholder="Escreva aqui seu artigo." class="form-control" name="article"
-                            id="article" rows="16"></textarea>
+                        <textarea placeholder="Escreva aqui seu artigo." class="form-control" name="body"
+                            id="body" rows="16"></textarea>
                     </div>
                 </div>
 
@@ -22,13 +22,19 @@
                 <label class="mb-2" for="category">Categorias</label>
                 <select name="category" id="category" class="form-select mb-3">
                     <% categories.forEach(category=> { %>
-                        <option value="<%= category.id %>" required>
+                        <option value="<%= category.id %>">
                             <%= category.title %>
                         </option>
                     <% }) %>
                 </select>
                 <button type="submit" class="btn btn-success mt-3">Criar Artigo</button>
             </form>
+
+
+            <% if (error) { %>
+                <div class="alert alert-danger"><%= error %></div>
+            <% } %>
+
         </div>
 
         <%- include('../partials/footer') %>
@@ -37,7 +43,7 @@
             <script>
                 tinymce.init({
                     language: 'pt_BR',
-                    selector: "#article",
+                    selector: "#body",
                     plugins: [
                         'advlist autolink link image lists print preview hr searchreplace fullscreen insertdatetime media save table paste emoticons'
                     ]

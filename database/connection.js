@@ -2,17 +2,13 @@ import { Sequelize } from 'sequelize';
 import ArticlesModel from '../src/articles/models/articlesModel.js';
 import CategoryModel from '../src/categories/models/categoriesModel.js';
 
-const connection = new Sequelize(
-   'my_blog', 
-   'root', 
-   '', // Senha vazia (padrão do XAMPP)
-   {
-     host: 'localhost',
-     dialect: 'mysql',
-     port: 3306,
-     logging: false
-   }
- );
+const connection = new Sequelize('my_blog', 'root', '', {
+	host: 'localhost',
+	dialect: 'mysql',
+	port: 3306,
+	logging: false,
+   timezone: "-03:00"
+});
 
 // Testar conexão com o banco
 const testConnection = async () => {

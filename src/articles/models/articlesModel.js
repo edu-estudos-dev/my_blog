@@ -1,10 +1,17 @@
 import { DataTypes, Model } from 'sequelize';
 
 class ArticlesModel extends Model {
+	// Método de inicialização do model
 	static initModel(connection) {
 		ArticlesModel.init(
 			{
-				title: DataTypes.STRING,
+				title: {
+					type: DataTypes.STRING,
+					allowNull: false,
+					validate: {
+						notEmpty: { msg: 'Título não pode ser vazio' }
+					}
+				},
 				slug: {
 					type: DataTypes.STRING,
 					unique: true
@@ -26,30 +33,13 @@ class ArticlesModel extends Model {
 		return ArticlesModel;
 	}
 
-	static async getAllArticles() {
-		try {
-			return await ArticlesModel.findAll();
-		} catch (error) {
-			console.error('Erro ao obter artigos:', error);
-			throw error;
-		}
+	// Relacionamento entre as tabelas
+	static associate(models) {
+		this.belongsTo(models.Category, {
+			foreignKey: 'categoryId',
+			as: 'category'
+		});
 	}
-
-	static async deleteArticle(id) {
-		try {
-			return await ArticlesModel.destroy({ where: { id } });
-		} catch (error) {
-			console.error('Erro ao deletar artigo:', error);
-			throw error;
-		}
-	}
-
-   static associate(models) {
-      this.belongsTo(models.Category, {
-          foreignKey: 'categoryId',
-          as: 'category'
-      });
-  }
 }
 
 export default ArticlesModel;

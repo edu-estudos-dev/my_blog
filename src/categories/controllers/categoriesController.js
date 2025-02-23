@@ -43,7 +43,7 @@ class CategoriesController {
 	// Método para resnderizar a tabela com as categorias
 	async showTableCategories(_req, res) {
 		try {
-			const categories = await CategoryModel.getAllCategories();
+			const categories = await CategoryModel.findAll();
 			res.render('categories/tableCategories', { categories });
 		} catch (error) {
 			console.error(
@@ -66,7 +66,7 @@ class CategoriesController {
 				});
 			}
 
-			const deletedCount = await CategoryModel.deleteCategory(id);
+			const deletedCount = await CategoryModel.destroy({ where: { id } });
 
 			if (deletedCount === 0) {
 				return res.status(404).json({
