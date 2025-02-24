@@ -2,14 +2,15 @@ import express from 'express';
 import methodOverride from 'method-override';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import categoriesRouter from './src/categories/routes/categoriesRoutes.js';
-import articlesRouter from './src/articles/routes/articlesRoutes.js';
+
+import exemplo1Routes from '../routes/Examplo1Routes.js';
+import exemplo2Routes from '../routes/Examplo2Routes.js';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.use(express.static(path.join(__dirname, 'src', 'public'))); 
+app.use(express.static(path.join(__dirname, 'src', 'public')));
 app.set('views', path.join(__dirname, 'src', 'views'));
 
 app.set('view engine', 'ejs');
@@ -19,8 +20,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(methodOverride('_method'));
 
-app.use(categoriesRouter);
-app.use(articlesRouter);
+app.use(exemplo1Routes);
+app.use(exemplo2Routes);
 
 app.get('/', (_req, res) => {
 	res.render('home');
