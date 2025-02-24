@@ -7,7 +7,7 @@ const articlesRouter = express.Router();
 articlesRouter.get('/articles/new', ArticlesController.showFormArticle);
 
 // rota para renderizar a tabela de artigos
-// articlesRouter.get('/categories/table', ArticlesController.showTableArticles);
+articlesRouter.get('/articles/table', ArticlesController.showTableArticles);
 
 // rota para criação de artigos
 articlesRouter.post('/articles/save', ArticlesController.createArticle);

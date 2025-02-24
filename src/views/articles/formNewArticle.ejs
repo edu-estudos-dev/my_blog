@@ -11,7 +11,7 @@
                         <h2>Criação de Artigos</h2>
                     </div>
                     <div class="card-body">
-                        <input class="form-control" placeholder="Crie aqui uma nova categoria." type="text" name="title"
+                        <input class="form-control" placeholder="Título do Artigo." type="text" name="title"
                             required> <br>
                         <textarea placeholder="Escreva aqui seu artigo." class="form-control" name="body"
                             id="body" rows="16"></textarea>
@@ -30,10 +30,9 @@
                 <button type="submit" class="btn btn-success mt-3">Criar Artigo</button>
             </form>
 
+            
 
-            <% if (error) { %>
-                <div class="alert alert-danger"><%= error %></div>
-            <% } %>
+        
 
         </div>
 
