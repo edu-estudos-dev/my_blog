@@ -62,7 +62,7 @@ class ArticlesController {
 	}
 
 	// Método para excluir categoria
-	async deteteArticle(req, res) {
+	async deleteArticle(req, res) {
 		try {
 			const id = parseInt(req.params.id, 10);
 
@@ -134,7 +134,7 @@ class ArticlesController {
 					title: upperCaseTitle,
 					slug,
 					body: body,
-					categoryId: category 
+					categoryId: category
 				},
 				{
 					where: { id }
@@ -147,6 +147,70 @@ class ArticlesController {
 			res.status(500).render('500', {
 				message: 'Erro ao atualizar artigo'
 			});
+		}
+	}
+
+	// Método para buscar um artigo pelo slug
+	async getArticleBySlug(req, res) {
+		try {
+			const article = await models.Article.findOne({
+				where: { slug: req.params.slug },
+				include: [
+					{
+						model: models.Category,
+						as: 'category'
+					}
+				]
+			});
+
+			if (!article) {
+				return res.status(404).render('404');
+			}
+			res.render('articles/article', { article });
+		} catch (error) {
+			console.error('Erro detalhado:', error);
+			res.status(500).render('500');
+		}
+	}
+
+	// Método para mostrar todos os artigos de
+	async getArticlesByCategory(req, res) {
+		try {
+			const categoryId = parseInt(req.params.id, 10);
+
+			const category = await models.Category.findByPk(categoryId, {
+				include: [
+					{
+						model: models.Article,
+						as: 'articles',
+						attributes: ['id', 'title', 'slug', 'createdAt']
+					}
+				]
+			});
+
+			if (!category) {
+				return res.status(404).render('404', {
+					message: 'Categoria não encontrada'
+				});
+			}
+
+			res.render('articles/articlesByCategory', {
+				category: category.toJSON()
+			});
+
+			const page = parseInt(req.query.page) || 1;
+			const limit = 10;
+			const offset = (page - 1) * limit;
+
+			const { count, rows: articles } = await models.Article.findAndCountAll({
+				where: { categoryId },
+				limit,
+				offset
+			});
+         
+		} catch (error) {
+			console.error('Erro ao buscar artigos por categoria:', error);
+			res.status(500).render('500');
 		}
 	}
 }

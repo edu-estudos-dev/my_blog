@@ -1,18 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <%- include('partials/head', { title: 'Página Inicial' }) %>
-<%- include('partials/nav-bar') %>
+    <%- include('partials/nav-bar') %>
 
-<div class="container mt-5">
-    <div class="jumbotron">
-        <h1 class="display-4">Bem-vindo ao My Blog!</h1>
-        <p class="lead">Um sistema simples para gerenciamento de categorias e artigos.</p>
-        <hr class="my-4">
-        <p>Comece criando uma nova categoria ou visualizando as existentes.</p>
-        <a class="btn btn-primary btn-lg" href="/categories/new" role="button">Criar Categoria</a>
-        <a class="btn btn-success btn-lg" href="/categories/table" role="button">Ver Categorias</a>
+    <div class="container mt-5">
+        <h1 class="display-4 mb-4">Bem-vindo ao My Blog!</h1>
+        <hr>
+        <p class="lead mb-5">Estes são os artigos já cadastrados:</p>
+
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 g-4">
+            <% articles.forEach(article=> { %>
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-light">
+                            <h5 class="card-title mb-0"><%= article.title %></h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-text truncate-text"><%- article.body %></div>
+                        </div>
+                        <div class="card-footer bg-transparent border-top-0">
+                            <a class="btn btn-outline-primary btn-sm w-100" href="/articles/<%= encodeURIComponent(article.slug) %>">Ler Artigo</a>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
     </div>
-</div>
 
-<%- include('partials/footer') %>
+    <%- include('partials/footer') %>
+
+    <style>
+        .truncate-text {
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* Limita a 3 linhas */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1.4em;
+            height: 4.2em; /* 3 linhas * 1.4em */
+        }
+
+        .card {
+            min-width: 200px;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
 </html>
