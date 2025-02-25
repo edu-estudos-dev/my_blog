@@ -3,7 +3,7 @@
 <%- include('../partials/head', { title: 'Formulário de Criação de artigos' }) %>
     <%- include('../partials/nav-bar') %>
 
-        <div class="container mt-5 w-50">
+        <div class="container mt-5 w-50" style="padding-top: 70px;">
             <br>
             <form action="/articles/save" method="post">
                 <div class="card">
@@ -11,10 +11,10 @@
                         <h2>Criação de Artigos</h2>
                     </div>
                     <div class="card-body">
-                        <input class="form-control" placeholder="Título do Artigo." type="text" name="title"
-                            required> <br>
-                        <textarea placeholder="Escreva aqui seu artigo." class="form-control" name="body"
-                            id="body" rows="16"></textarea>
+                        <input class="form-control" placeholder="Título do Artigo." type="text" name="title" required>
+                        <br>
+                        <textarea placeholder="Escreva aqui seu artigo." class="form-control" name="body" id="body"
+                            rows="16"></textarea>
                     </div>
                 </div>
 
@@ -25,14 +25,14 @@
                         <option value="<%= category.id %>">
                             <%= category.title %>
                         </option>
-                    <% }) %>
+                        <% }) %>
                 </select>
                 <button type="submit" class="btn btn-success mt-3">Criar Artigo</button>
             </form>
 
-            
 
-        
+
+
 
         </div>
 

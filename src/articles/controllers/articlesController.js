@@ -1,5 +1,6 @@
 import slugify from 'slugify';
 import striptags from 'striptags';
+import truncate from 'truncate-html';
 
 import { models } from '../../models/index.js';
 
@@ -54,7 +55,17 @@ class ArticlesController {
 				}
 			});
 
-			res.render('articles/tableArticles', { articles });
+			const processedArticles = articles.map(article => ({
+				...article.dataValues,
+				shortBody: truncate(article.body, {
+					length: 10, // Máximo de caracteres
+					byWords: true, // Cortar por palavras completas
+					ellipsis: '...', // Sufixo
+					stripTags: true // Remove HTML tags
+				})
+			}));
+
+			res.render('articles/tableArticles', { articles: processedArticles });
 		} catch (error) {
 			console.error('Erro ao renderizar a tabela de artigos:', error);
 			res.status(500).send('Erro ao renderizar a tabela de artigos');
@@ -207,7 +218,6 @@ class ArticlesController {
 				limit,
 				offset
 			});
-         
 		} catch (error) {
 			console.error('Erro ao buscar artigos por categoria:', error);
 			res.status(500).render('500');

@@ -3,8 +3,23 @@
 <%- include('../partials/head', { title: category.title }) %>
   <%- include('../partials/nav-bar') %>
 
-    <div class="container mt-5">
+    <style>
+      .list-group-item {
+        transition: all 0.2s;
+        border-left: 4px solid transparent;
+      }
 
+      .list-group-item:hover {
+        transform: translateX(10px);
+        border-left-color: #0d6efd;
+      }
+
+      .list-group-item h5 {
+        color: #333;
+      }
+    </style>
+
+    <div class="container mt-5" style="padding-top: 70px;">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><a href="/">Home</a></li>
@@ -44,9 +59,9 @@
               <% } %>
 
                 <div class="mt-4">
-                  <a href="/" class="btn btn-outline-secondary">
+                  <a href="/articles/table" class="btn btn-outline-secondary">
                     <i class="bi bi-arrow-left me-2"></i>
-                    Voltar para Home
+                    Voltar para tabela
                   </a>
                 </div>
         </div>
@@ -54,21 +69,5 @@
     </div>
 
     <%- include('../partials/footer') %>
-
-      <style>
-        .list-group-item {
-          transition: all 0.2s;
-          border-left: 4px solid transparent;
-        }
-
-        .list-group-item:hover {
-          transform: translateX(10px);
-          border-left-color: #0d6efd;
-        }
-
-        .list-group-item h5 {
-          color: #333;
-        }
-      </style>
 
 </html>
