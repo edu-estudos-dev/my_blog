@@ -23,9 +23,29 @@ app.use(methodOverride('_method'));
 app.use(categoriesRouter);
 app.use(articlesRouter);
 
-app.get('/', async (_req, res) => {
-	const articles = await models.Article.findAll();
-	res.render('home', { articles });
+// Rota raiz
+app.get('/', async (req, res) => {
+	const page = parseInt(req.query.page) || 1; // Página atual, padrão é 1
+	const limit = 10; // Número de artigos por página
+	const offset = (page - 1) * limit; // Calcula quantos artigos pular
+
+	const { count, rows: articles } = await models.Article.findAndCountAll({
+		limit: limit,
+		offset: offset,
+		order: [['id', 'desc']]
+	});
+
+	const totalPages = Math.ceil(count / limit); // Total de páginas
+	const hasNext = page < totalPages; // Verifica se há próxima página
+	const hasPrev = page > 1; // Verifica se há página anterior
+
+	res.render('home', {
+		articles,
+		page,
+		hasNext,
+		hasPrev,
+		totalPages
+	});
 });
 
 app.use((_req, res) => {

@@ -38,7 +38,10 @@ class CategoriesController {
 	// Método para renderizar a tabela com as categorias
 	async showTableCategories(_req, res) {
 		try {
-			const categories = await models.Category.findAll();
+			const categories = await models.Category.findAll({
+            order: [['id', 'desc']],
+         });
+
 			res.render('categories/tableCategories', { categories });
 		} catch (error) {
 			console.error(

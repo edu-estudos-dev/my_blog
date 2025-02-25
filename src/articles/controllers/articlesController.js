@@ -49,6 +49,7 @@ class ArticlesController {
 	async showTableArticles(_req, res) {
 		try {
 			const articles = await models.Article.findAll({
+				order: [['id', 'desc']],
 				include: {
 					model: models.Category,
 					as: 'category'
@@ -221,6 +222,42 @@ class ArticlesController {
 		} catch (error) {
 			console.error('Erro ao buscar artigos por categoria:', error);
 			res.status(500).render('500');
+		}
+	}
+
+	// Método para criar paginação
+	async createPagination(req, res) {
+		try {
+			const page = parseInt(req.params.num, 10);
+			let offset = 0;
+
+			// Verifica se page é válido e calcula o offset
+			if (isNaN(page) || page <= 1) {
+				offset = 0;
+			} else {
+				offset = (page - 1) * 4;
+			}
+
+			const articles = await models.Article.findAndCountAll({
+				limit: 4,
+				offset: offset,
+				order: [['id', 'desc']],
+				include: [{ model: models.Category, as: 'category' }]
+			});
+
+			const next = offset + 4 < articles.count;
+
+			const result = {
+				next: next,
+				articles: articles.rows,
+				total: articles.count,
+				page: page || 1
+			};
+
+			return res.render('articles/page', { result });
+		} catch (error) {
+			console.error('Erro na paginação:', error);
+			return res.status(500).json({ error: 'Erro ao buscar artigos' });
 		}
 	}
 }

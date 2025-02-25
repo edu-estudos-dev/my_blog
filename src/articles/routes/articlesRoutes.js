@@ -27,5 +27,8 @@ articlesRouter.put('/articles/update/:id', ArticlesController.updateArticle);
 // rota para pegar uma artigo por slug
 articlesRouter.get('/articles/:slug', ArticlesController.getArticleBySlug);
 
+// rota de paginação
+articlesRouter.get('/articles/page/:num', ArticlesController.createPagination);
+
 
 export default articlesRouter;
