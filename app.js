@@ -31,9 +31,9 @@ app.use(
 	})
 );
 
-app.use(categoriesRouter);
-app.use(articlesRouter);
 app.use('/users', usersRouter);
+app.use('/categories', categoriesRouter);
+app.use('/articles', articlesRouter);
 
 // Rota raiz
 app.get('/', async (req, res) => {
@@ -65,6 +65,7 @@ app.get('/', async (req, res) => {
 		res.status(500).render('500');
 	}
 });
+
 app.use((_req, res) => {
 	res.status(404).render('404');
 });

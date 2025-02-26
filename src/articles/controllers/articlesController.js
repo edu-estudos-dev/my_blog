@@ -185,11 +185,10 @@ class ArticlesController {
 		}
 	}
 
-	// Método para mostrar todos os artigos de
+	// Método para mostrar todos os artigos de uma categoria
 	async getArticlesByCategory(req, res) {
 		try {
 			const categoryId = parseInt(req.params.id, 10);
-
 			const category = await models.Category.findByPk(categoryId, {
 				include: [
 					{
@@ -201,26 +200,14 @@ class ArticlesController {
 			});
 
 			if (!category) {
-				return res.status(404).render('404', {
-					message: 'Categoria não encontrada'
-				});
+				return res.status(404).render('404');
 			}
 
 			res.render('articles/articlesByCategory', {
 				category: category.toJSON()
 			});
-
-			const page = parseInt(req.query.page) || 1;
-			const limit = 10;
-			const offset = (page - 1) * limit;
-
-			const { count, rows: articles } = await models.Article.findAndCountAll({
-				where: { categoryId },
-				limit,
-				offset
-			});
 		} catch (error) {
-			console.error('Erro ao buscar artigos por categoria:', error);
+			console.error('Erro:', error);
 			res.status(500).render('500');
 		}
 	}

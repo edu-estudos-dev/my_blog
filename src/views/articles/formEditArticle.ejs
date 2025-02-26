@@ -7,8 +7,9 @@
     <form action="/articles/update/<%= article.id %>?_method=PUT" method="post"
         onsubmit="return confirmEdit(event, this)">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header d-flex justify-content-between align-items-center">
                 <h2>Edição de Artigo</h2>
+                <button type="submit" class="btn btn-success">Atualizar Artigo</button>
             </div>
             <div class="card-body">
                 <input type="hidden" name="id" value="<%= article.id %>">
@@ -27,7 +28,6 @@
                 </option>
             <% }) %>
         </select>
-        <button type="submit" class="btn btn-success mt-3">Atualizar Artigo</button>
     </form>
 </div>
 

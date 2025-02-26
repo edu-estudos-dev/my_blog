@@ -2,23 +2,23 @@ import express from 'express';
 import CategoriesController from '../controllers/categoriesController.js';
 
 const categoriesRouter = express.Router();
-
 // rota para renderizar o formulário para criação de categorias
-categoriesRouter.get('/categories/new', CategoriesController.showFormCategories);
-
-// rota para renderizar a tabela de categorias
-categoriesRouter.get('/categories/table', CategoriesController.showTableCategories);
+categoriesRouter.get('/new', CategoriesController.showFormCategories);
 
 // rota para criação de categorias
-categoriesRouter.post('/categories/save', CategoriesController.createCategory);
+categoriesRouter.post('/save', CategoriesController.createCategory);
 
 // rota para excluir uma categoria
-categoriesRouter.delete('/categories/:id', CategoriesController.deleteCategory);
+categoriesRouter.delete('/:id', CategoriesController.deleteCategory);
 
-// rota para renderizar o formulário para edição de categorias
-categoriesRouter.get('/categories/formEditCategory/:id', CategoriesController.showFormEdit);
+// rota para renderizar o formulário para edição de Categoria
+categoriesRouter.get('/formEditCategory/:id', CategoriesController.showFormEdit);
+
+// rota para renderizar a tabela de categorias
+categoriesRouter.get('/table', CategoriesController.showTableCategories);
 
 // rota para editar uma categoria
-categoriesRouter.put('/categories/update/:id', CategoriesController.updateCategory);
+categoriesRouter.put('/update/:id', CategoriesController.updateCategory);
+
 
 export default categoriesRouter;

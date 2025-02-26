@@ -7,8 +7,9 @@
             <br>
             <form action="/categories/update/<%= category.id %>?_method=PUT" method="post">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header d-flex justify-content-between align-items-center">
                         <h2>Edição de categoria</h2>
+                        <button type="submit" class="btn btn-success">Atualizar Categoria</button>
                     </div>
                     <div class="card-body">
                         <input type="hidden" name="id" value="<%= category.id %>">
@@ -16,7 +17,6 @@
                             name="title" required value="<%= category.title %>">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success mt-3">Atualizar Categoria</button>
             </form>
         </div>
 

@@ -4,31 +4,30 @@ import ArticlesController from '../controllers/articlesController.js';
 const articlesRouter = express.Router();
 
 // rota para renderizar o formulário para criação de artigos
-articlesRouter.get('/articles/new', ArticlesController.showFormArticle);
+articlesRouter.get('/new', ArticlesController.showFormArticle);     
 
 // rota para criação de artigos
-articlesRouter.post('/articles/save', ArticlesController.createArticle);
+articlesRouter.post('/save', ArticlesController.createArticle);    
+
+// rota para renderizar o formulário para edição de Categoria
+articlesRouter.get('/formEditArticle/:id', ArticlesController.showFormEdit); 
+
+// rota para editar uma artigo
+articlesRouter.put('/update/:id', ArticlesController.updateArticle);     
 
 // rota para excluir uma artigo
-articlesRouter.delete('/articles/:id', ArticlesController.deleteArticle); 
-
-// rota para renderizar o formulário para edição de Artigo
-articlesRouter.get('/articles/formEditArticle/:id', ArticlesController.showFormEdit);
+articlesRouter.delete('/:id', ArticlesController.deleteArticle);        
 
 // rota para renderizar a tabela de artigos
-articlesRouter.get('/articles/table', ArticlesController.showTableArticles);
-
-// rota para renderizar a pagina de artigos de uma categoria
-articlesRouter.get('/categories/:id/articles', ArticlesController.getArticlesByCategory);
-
-// rota para editar um artigo
-articlesRouter.put('/articles/update/:id', ArticlesController.updateArticle);
-
-// rota para pegar uma artigo por slug
-articlesRouter.get('/articles/:slug', ArticlesController.getArticleBySlug);
+articlesRouter.get('/table', ArticlesController.showTableArticles);  
 
 // rota de paginação
-articlesRouter.get('/articles/page/:num', ArticlesController.createPagination);
+articlesRouter.get('/page/:num', ArticlesController.createPagination); 
 
+// rota para renderizar a página de artigos de uma categoria selecionada
+articlesRouter.get('/categories/:id/articles', ArticlesController.getArticlesByCategory); 
+
+// rota para pegar um artigo por slug
+articlesRouter.get('/:slug', ArticlesController.getArticleBySlug);   
 
 export default articlesRouter;
