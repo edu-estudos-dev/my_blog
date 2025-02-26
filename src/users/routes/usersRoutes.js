@@ -13,5 +13,9 @@ userRouter.get('/register', UserControllers.showFormRegister);
 userRouter.post('/register', UserControllers.createUser);
 
 // Rota para autenticar credenciais de login
-userRouter.post('/', UserControllers.login)
+userRouter.post('/', UserControllers.login);
+
+// Rota para autenticar credenciais de login
+userRouter.post('/logout', UserControllers.logout);
+
 export default userRouter;

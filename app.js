@@ -5,6 +5,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import articlesRouter from './src/articles/routes/articlesRoutes.js';
 import categoriesRouter from './src/categories/routes/categoriesRoutes.js';
+import { requireAuth } from './src/middlewares/auth.js';
 import { models } from './src/models/index.js';
 import usersRouter from './src/users/routes/usersRoutes.js';
 
@@ -24,16 +25,21 @@ app.use(methodOverride('_method'));
 
 app.use(
 	session({
-		secret: 'seuSegredoAqui',
-		resave: false,
-		saveUninitialized: true,
-		cookie: { secure: false } // Altere para true em produção com HTTPS
+		secret: 'seuSegredoSuperSecreto', // Troque por uma chave forte
+		resave: false, // Evita salvar a sessão se não for modificada
+		saveUninitialized: false, // Não cria sessão até que algo seja armazenado
+		cookie: {
+			secure: process.env.NODE_ENV === 'production',
+			httpOnly: true,
+			maxAge: 24 * 60 * 60 * 1000,
+			sameSite: 'lax'
+		}
 	})
 );
 
 app.use('/users', usersRouter);
-app.use('/categories', categoriesRouter);
-app.use('/articles', articlesRouter);
+app.use('/categories', requireAuth, categoriesRouter);
+app.use('/articles', requireAuth, articlesRouter);
 
 // Rota raiz
 app.get('/', async (req, res) => {

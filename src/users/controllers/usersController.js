@@ -66,22 +66,22 @@ class UserController {
 	async login(req, res) {
 		const { userName, password } = req.body;
 
-		// Validação básica
+		// verificação de campos obrigatórios
 		if (!userName || !password) {
 			return res.render('users/formLogin', {
-				erro: 'Preencha todos os campos!'
+				erro: 'Usuário ou senha incorretos.'
 			});
 		}
 
 		try {
-			const lowerCaseUser = userName.toLowerCase().trim();
+			const userLowwerCase = userName.toLowerCase().trim();
 			const foundUser = await models.Users.findOne({
-				where: { userName: lowerCaseUser }
+				where: { userName: userLowwerCase }
 			});
 
 			if (!foundUser) {
-				return res.render('users/formLogin', {
-					erro: 'Usuário não encontrado'
+				return res.status(400).render('users/formLogin', {
+					erro: 'Usuário não cadastrado no banco de dados'
 				});
 			}
 
@@ -90,12 +90,11 @@ class UserController {
 
 			if (validPassword) {
 				req.session.user = {
-					id: foundUser.id,
-					userName: foundUser.userName
+					id: foundUser.id
 				};
-				return res.redirect('/');
+				return res.status(200).redirect('/');
 			} else {
-				return res.render('users/formLogin', {
+				res.render('users/formLogim', {
 					erro: 'Senha incorreta'
 				});
 			}
@@ -106,6 +105,27 @@ class UserController {
 			});
 		}
 	}
+
+	// Metodo de logout
+
+	logout = (req, res) => {
+		req.session.destroy(err => {
+			if (err) {
+				console.error('Erro ao destruir sessão:', err);
+				return res.status(500).render('500');
+			}
+
+			// Limpa o cookie COM AS MESMAS OPÇÕES DA SESSÃO
+			res.clearCookie('connect.sid', {
+				path: '/',
+				secure: process.env.NODE_ENV === 'production', // Mesmo valor da sessão
+				httpOnly: true,
+				sameSite: 'lax'
+			});
+
+			res.redirect('/users/login'); 
+		});
+	};
 }
 
 export default new UserController();
