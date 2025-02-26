@@ -1,10 +1,12 @@
 import express from 'express';
+import session from 'express-session';
 import methodOverride from 'method-override';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import articlesRouter from './src/articles/routes/articlesRoutes.js';
 import categoriesRouter from './src/categories/routes/categoriesRoutes.js';
 import { models } from './src/models/index.js';
+import usersRouter from './src/users/routes/usersRoutes.js';
 
 const app = express();
 const __filename = fileURLToPath(import.meta.url);
@@ -20,34 +22,49 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(methodOverride('_method'));
 
+app.use(
+	session({
+		secret: 'seuSegredoAqui',
+		resave: false,
+		saveUninitialized: true,
+		cookie: { secure: false } // Altere para true em produção com HTTPS
+	})
+);
+
 app.use(categoriesRouter);
 app.use(articlesRouter);
+app.use('/users', usersRouter);
 
 // Rota raiz
 app.get('/', async (req, res) => {
-	const page = parseInt(req.query.page) || 1; // Página atual, padrão é 1
-	const limit = 10; // Número de artigos por página
-	const offset = (page - 1) * limit; // Calcula quantos artigos pular
-
-	const { count, rows: articles } = await models.Article.findAndCountAll({
-		limit: limit,
-		offset: offset,
-		order: [['id', 'desc']]
-	});
-
-	const totalPages = Math.ceil(count / limit); // Total de páginas
-	const hasNext = page < totalPages; // Verifica se há próxima página
-	const hasPrev = page > 1; // Verifica se há página anterior
-
-	res.render('home', {
-		articles,
-		page,
-		hasNext,
-		hasPrev,
-		totalPages
-	});
+	if (!req.session.user) {
+		return res.redirect('/users/login');
+	}
+	const page = parseInt(req.query.page) || 1;
+	const limit = 10;
+	const offset = (page - 1) * limit;
+	try {
+		const { count, rows: articles } = await models.Article.findAndCountAll({
+			limit: limit,
+			offset: offset,
+			order: [['id', 'desc']]
+		});
+		const totalPages = Math.ceil(count / limit);
+		const hasNext = page < totalPages;
+		const hasPrev = page > 1;
+		res.render('home', {
+			articles,
+			page,
+			hasNext,
+			hasPrev,
+			totalPages,
+			user: req.session.user // Passe o usuário para a view
+		});
+	} catch (error) {
+		console.error('Erro ao carregar artigos:', error);
+		res.status(500).render('500');
+	}
 });
-
 app.use((_req, res) => {
 	res.status(404).render('404');
 });

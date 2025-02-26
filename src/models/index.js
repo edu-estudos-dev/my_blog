@@ -1,27 +1,26 @@
+// models/index.js (corrigido)
 import { Sequelize } from 'sequelize';
-import categoryModel from '../categories/models/categoryModel.js';
 import articleModel from '../articles/models/articleModel.js';
+import categoryModel from '../categories/models/categoryModel.js';
+import userModel from '../users/models/usersModel.js';
 
 const sequelize = new Sequelize('my_blog', 'root', '', {
-  host: 'localhost',
-  dialect: 'mysql',
-  port: 3306,
-  logging: false,
-  timezone: '-03:00'
+    host: 'localhost',
+    dialect: 'mysql',
+    port: 3306,
+    logging: false,
+    timezone: '-03:00'
 });
 
-// Inicializar todos os modelos
-const Category = categoryModel(sequelize);
-const Article = articleModel(sequelize);
-
-// Configurar associações
+// Inicializar modelos
 const models = {
-  Category,
-  Article
+    Category: categoryModel(sequelize),
+    Article: articleModel(sequelize),
+    Users: userModel(sequelize) 
 };
 
-// Aplicar associações
-Category.associate(models);
-Article.associate(models);
+// Configurar associações
+models.Category.associate(models);
+models.Article.associate(models);
 
-export { sequelize, models };
+export { models, sequelize };
